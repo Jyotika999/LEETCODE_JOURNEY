@@ -3,6 +3,8 @@ public:
     
     int ans[1005][1005];
     
+    // it was initially giving me TLE, but when i passed the strings by reference , there is no copy which gets created , so whenever the strings are immutable pass it by reference.
+    
     int LCS(string &s1, string &s2, int n1 , int n2)
     {
         if(n1<=0 ||  n2<=0)
@@ -38,7 +40,7 @@ public:
         
        return LCS(text1, text2, n1 , n2);
         
-        return ans[n1][n2];
+       // return ans[n1][n2];
         
     }
 };
