@@ -1,32 +1,40 @@
 class Solution {
 public:
+    int minimumTotal(vector<vector<int>>& ar) {
     
-    int dp[205][205];
-    
-    // ith level, jth number 
-    int solve(int i, int j, int n, vector<vector<int>>&triangle)
-    {
-        if(i>=triangle.size())
-           return 0;
-        
-        if(j>=triangle[i].size())
-            return 0;
-        
-        if(dp[i][j]!=-1)
-            return dp[i][j];
-        
-        
-        return dp[i][j] = triangle[i][j] + min( solve(i+1, j, n, triangle) , solve(i+1, j+1, n, triangle));
+    int n = ar.size();
+    int cur = n-1;
+    for(int i=0; i<n; i++) {
+        for(int j=1; j<=i; j++) ar[cur].push_back(0);
+        cur--;
     }
-    
-    int minimumTotal(vector<vector<int>>& triangle) {
         
-        int n= triangle.size();
+        for(int i=n-1;i>=0;i--){
+            auto it = ar[i];
+            
+            for(int j=0;j<it.size();j++)
+            {
+                cout<<ar[i][j]<<" ";
+            }
+            cout<<"\n";
+        }
         
-        memset(dp, -1, sizeof(dp));
         
-        return solve(0, 0, n, triangle);
+    int dp[n][n];
+        
+    for(int i=0; i<n; i++) for(int j=0; j<n; j++) dp[i][j] = 1e4;
         
         
+    dp[0][0] = ar[0][0];
+    for(int i=1; i<n; i++) {
+        for(int j=0; j<n; j++) {
+            if(j)
+            dp[i][j] = min(dp[i-1][j-1], dp[i-1][j]) + ar[i][j];
+            else dp[i][j] = dp[i-1][j] + ar[i][j]; 
+        }
+    }
+    int ans = INT_MAX;
+    for(int i=0; i<n; i++) ans = min(ans, dp[n-1][i]);
+    return ans;
     }
 };
