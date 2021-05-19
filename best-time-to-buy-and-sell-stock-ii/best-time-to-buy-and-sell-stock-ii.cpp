@@ -5,20 +5,30 @@ public:
         
         int n = prices.size();
         
-        int maxi=0;
+        int maxi =0;
         
-        for(int i=1;i<n;i++)
+        int valley = prices[0];
+        int peak = prices[0];
+        int last = n-1;
+        int i=0;
+        while(i<last)
         {
-            if(prices[i] > prices[i-1])
-            {
-                maxi += prices[i] - prices[i-1];
-            }
+            
+            while(i<last && prices[i+1]<=prices[i])i++;  
+            
+            valley = prices[i];
+            
+            
+            while(i<last && prices[i+1]>=prices[i])i++;
+            
+            peak = prices[i];
+            
+            maxi += peak-valley;
+            
             
         }
         
         return maxi;
-        
-        
         
     }
 };
