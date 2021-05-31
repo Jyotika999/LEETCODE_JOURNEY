@@ -1,49 +1,31 @@
 class Solution {
 public:
     
-    int ans[1005];
+    int dp[1005];
     
-    int solve(vector<int>&nums, int n)
+    int solve(int n, vector<int>&nums)
     {
+        if(n==0)
+            return 0;
+        if(n==1)
+            return dp[n] = nums[n-1];
         
-        if(n<0)
-            return ans[n]=0;
-        if(n==0) 
-            return ans[n]=0;
-        if(n==1) 
-            return ans[n]= nums[n-1];
+        if(n==2)
+            return dp[n] = max(nums[0], nums[1]);
         
-        if(n==2) 
-            return ans[n]=max(nums[n-2], nums[n-1]);
+        if(dp[n]!=-1)
+            return dp[n];
         
-        if(ans[n]!=-1)
-            return ans[n];
-        
-        else
-            return ans[n] = max( nums[n-1]+ solve(nums, n-2) , solve(nums, n-1));
-        
+        return dp[n] = max( nums[n-1] + solve(n-2, nums), solve(n-1, nums));
     }
     
     
     int rob(vector<int>& nums) {
-
+        
         int n = nums.size();
-        memset(ans, -1, sizeof(ans));
+        memset(dp, -1, sizeof(dp));
         
-        solve(nums, n); 
-        
-        int maxi = 0;
-        for(int i=0;i<=n;i++)
-        {
-            maxi = max(ans[i], maxi);
-            cout<<ans[i]<<"\n";
-        }
-            
-        
-        return maxi;
+        return solve(n, nums);
         
     }
 };
-
-
-
