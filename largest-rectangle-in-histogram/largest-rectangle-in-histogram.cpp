@@ -42,12 +42,10 @@ public:
 	reverse(r.begin(), r.end());
 	//for(ll i=0;i<(ll)r.size();i++) cout<<r[i]<<" ";
 	
-        // width = next smaller right - next smaller left - 1 
 	int width[n];
 	for(int i=0;i<n;i++)width[i] = abs(r[i]-l[i])-1;
 	int maxi_area=0;
 	
-        // area = width * ar[i]
 	for(int i=0;i<n;i++)
 	{
 		int cur_area = width[i] *  ar[i];
