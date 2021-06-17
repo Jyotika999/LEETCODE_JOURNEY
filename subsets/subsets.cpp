@@ -1,40 +1,38 @@
 class Solution {
 public:
-    vector<vector<int>> subsets(vector<int>& nums) {
-        
-        
-          int n = nums.size();
-        
-       // sort(nums.begin(), nums.end());
-        
-        vector<vector<int>>all_subsets;
-        
-        int subsetmask_size = 1<<n;
-        for(int subsetmask =0; subsetmask< subsetmask_size ; subsetmask++)
+    
+    vector<vector<int>>all_subsets;
+    
+    void generate(vector<int>&nums, int i, vector<int>&subset)
+    {
+        if(i==(nums.size()))
         {
-            vector<int>subset;
-            for(int j=0;j<n;j++)
-            {
-                if(subsetmask & (1<<j))
-                {
-                    subset.push_back(nums[j]);
-                }
-            }
-            
-            // if( find(all_subsets.begin(), all_subsets.end(), subset)==all_subsets.end() ) 
             all_subsets.push_back(subset);
+            return;
         }
         
-      //  sort(all_subsets.begin(), all_subsets.end());
+        
+        // excluding this element
+        generate(nums, i+1, subset);
+        
+        
+        // including this element
+        subset.push_back(nums[i]);
+        generate(nums, i+1, subset);
+        // now backtracking
+        subset.pop_back();
+        
+        
+    }
+    
+    
+    
+    vector<vector<int>> subsets(vector<int>& nums) {
+        
+        vector<int>subset;
+        generate(nums, 0, subset);
         return all_subsets;
         
-        
-        
-        
-        
-        
-        
-        
-        
+       
     }
 };
