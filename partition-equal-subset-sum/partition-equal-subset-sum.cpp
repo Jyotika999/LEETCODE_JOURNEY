@@ -1,50 +1,44 @@
 class Solution {
 public:
     
-   // int dp[999][9999];
+    int dp[205][20005];
     
-    bool equal_subset_sum_partition(vector<int>nums, int sum , int n,   vector<vector<int>>& dp)
+    bool partition(int sum, vector<int>&nums, int i, int n)
     {
         if(sum==0)
-            return 1;
+            return dp[i][sum]=true;
         
-        if(n==0)
-            return 0;
+        if(i==n)
+            return dp[i][sum]=false;
         
-        if(dp[n][sum]!=-1)
-            return dp[n][sum];
-            
-        if(nums[n-1]<=sum)
+        if(dp[i][sum]!=-1)
+            return dp[i][sum];
+        
+        if(nums[i]<=sum)
         {
-            return dp[n][sum] = equal_subset_sum_partition(nums,  sum-nums[n-1] , n-1, dp) || equal_subset_sum_partition(nums,  sum , n-1, dp);
+            return dp[i][sum] = partition(sum-nums[i], nums , i+1, n)|| partition(sum , nums, i+1, n);
         }
         else
         {
-
-        return dp[n][sum] = equal_subset_sum_partition(nums,  sum, n-1, dp) ;
+            return dp[i][sum]= partition(sum, nums, i+1, n);
         }
+        
     }
-    
     
     
     bool canPartition(vector<int>& nums) {
         
-     
+        memset(dp, -1, sizeof(dp));
+        
         int sum=0;
         int n = nums.size();
-        
         for(int i=0;i<n;i++)
-        {
-            sum+=nums[i];
-        }
-        if(sum&1) return false;
+            sum+= nums[i];
         
-      // int dp[n+1][sum+1];
-         vector<vector<int>> dp(n+1,vector<int>(sum+1,-1));
-     //   memset(dp, -1, sizeof(dp));
-        cout<<n<<"\n";
-        cout<<sum<<"\n";
-        return equal_subset_sum_partition(nums, sum/2 , n, dp);
-     //   return dp[n][sum];
+        if(sum%2!=0)
+            return false;
+        
+        
+        return partition(sum/2, nums, 0, n);
     }
 };
