@@ -2,7 +2,15 @@ class Solution {
 public:
     vector<vector<int>>ans;
     
-    
+    void print(vector<int>&temp)
+    {
+        int n = temp.size();
+        for(int i=0;i<n;i++)
+            cout<<temp[i]<<" ";
+        cout<<"\n";
+        return;
+        
+    }
     void generate(vector<int>&temp, int n , int k, int i)
     {
         
@@ -21,7 +29,11 @@ public:
         // include current element
         temp.push_back(i);
         generate(temp, n, k, i+1);
+        // cout<<"AFTER INCLUDING CURRENT ELEMENT\n";
+        // print(temp);
         temp.pop_back();
+        // cout<<"AFTER INCLUDING AND POPPING BACK CURRENT ELEMENT\n";
+        // print(temp);
         
         
         // excluding current element
