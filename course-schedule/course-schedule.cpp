@@ -1,67 +1,59 @@
 class Solution {
 public:
     
-    vector<int>graph[5050];
-    int vis[100005];
-    int dfsvis[100005];
+    // pre requisite 
+    //  b -> a
+    // directed graph 
     
     
-    bool dfs(int node)
-    {
-        vis[node]=1;
-        dfsvis[node]=1;
-        cout<<node<<vis[node]<<" "<<dfsvis[node]<<"\n";
+    vector<int>graph[100001];
+    
+    bool canFinish(int num, vector<vector<int>>& pre) {
         
-        for(auto child : graph[node])
+        int e = pre.size();
+        int indegree[num];
+        memset(indegree, 0, sizeof(indegree));
+        queue<int>q;
+        
+        for(int i=0;i<e;i++)
         {
-            if(vis[child]==0)
-            {
-                if(dfs(child))
-                    return true;
-            }
-            // if already visited node, and now we need to check if that node is visited from the current dfs function call node 
-            else if(dfsvis[child]==1)
-            {
-                return true;
-            }
+            int u = pre[i][0];
+            int v = pre[i][1];
+           // v->u 
+            graph[v].push_back(u);
+            indegree[u]++;
         }
-        
-        // backtracking step 
-        dfsvis[node]=0;
-        return false;
-        
-    }
-    
-    
-    bool canFinish(int numCourses, vector<vector<int>>& courses) {
-        
-        memset(vis, 0, sizeof(vis));
-        memset(dfsvis, 0, sizeof(dfsvis));
-        
-        int n = courses.size();
-        
-        for(int i=0;i<n;i++)
+        for(int i=0;i<num; i++)
         {
-            int u = courses[i][0];
-            int v = courses[i][1];
-            
-            graph[u].push_back(v);
-          //  graph[v].push_back(u);
-        }
-        bool cycle= false;
-        
-        
-        for(int i=0;i<=numCourses;i++)
-        {
-            if(vis[i]==0)
+            if(indegree[i]==0)
             {
-               // cout<<dfs(i)<<"\n";
-                if(dfs(i))
-                    cycle = true;
+                q.push(i);
             }
         }
         
-        return !(cycle);
+        while(!q.empty())
+        {
+            auto cur = q.front();
+            q.pop();
+            for(auto child : graph[cur])
+            {
+                indegree[child]--;
+                
+                if(indegree[child]==0)
+                {
+                    q.push(child);
+                }
+            }
+        }
         
+        for(int i=0;i<num;i++)
+        {
+            if(indegree[i]==0)
+                continue;
+            else
+                return false;
+        }
+        
+        return true;
     }
 };
