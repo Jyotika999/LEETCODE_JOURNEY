@@ -1,27 +1,24 @@
 class Solution {
 public:
-    
-    
-    
+     
+    void solve(vector<char>&s, int left, int right)
+    {
+        if(left>=right)
+            return;
+        
+        swap(s[left], s[right]);
+        solve(s, left+1, right-1);
+    }
     
     
     void reverseString(vector<char>& s) {
         
-        int low =0;
-        int high = s.size()-1;
+        int n = s.size();
+        int left =0;
+        int right = n-1;
+        solve(s, left, right);
         
         
-        while(low<=high)
-        {
-            // char p = s[low];
-            // char q = s[high];
-           
-            swap(s[low], s[high]);
-            low++;
-            high--;
-            
-        }
         
-        return;
     }
 };
