@@ -12,38 +12,27 @@
 class Solution {
 public:
     
-    
-    int dfs(TreeNode * root, string s)
+    int dfs(TreeNode * root, int sum)
     {
         if(root==NULL)
-        {
             return 0;
-        }
+        
         if(root->left==NULL and root->right==NULL)
         {
-            // leaf node 
-            
-            string temp = to_string(root->val);
-            s+=temp;
-            return stoi(s);
-           
+            // leaf node
+            sum = sum*10 + root->val;
+            return sum;
         }
         
-        s+=to_string(root->val);
-        return  (dfs(root->left,s)+dfs(root->right,s));
-        
-        
+        sum = sum *10 + root->val;
+        return (dfs(root->left, sum)+ dfs(root->right, sum));
     }
+    
     int sumNumbers(TreeNode* root) {
-        
         if(root==NULL)
             return 0;
         
-        string s="";
-        
-        
-        int sum = dfs(root, s);
-        return sum;
+        return dfs(root, 0);
         
     }
 };
