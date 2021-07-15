@@ -1,28 +1,50 @@
 class Solution {
 public:
-    int maxOperations(vector<int>& nums, int k) {
+    int maxOperations(vector<int>& num, int k) {
         
-        int n = nums.size();
-        map<int, int>mp;
-        int ct=0;
+         // two pointer approach
+//         int ct=0;
+//         int i = 0;
+//         int n = nums.size();
+//         int j = nums.size()-1;
         
-        for(int i=0;i<n;i++)
-        {
-            int cur = nums[i];
-            int search = k - nums[i];
-            
-            if(mp[search])
-            {
-                ct++;
-                mp[search]--;
-            }
-            else
-            {
-                mp[cur]++;
-            }
-        }
+//         sort(nums.begin(), nums.end());
         
-        return ct;
+        
+//         while(i<j and i>=0 and j<n)
+//         {
+//             cout<<i<<" "<<j<<" "<<nums[i]<<" "<<nums[j]<<"\n";
+//             if(nums[i]+nums[j]== target)
+//             {
+               
+//                 ct++;
+//                 i++;
+//                 j--;
+//             }
+//             else if(nums[i] + nums[j] < target)
+//             {
+//                  i++;
+//             }
+//             else
+//             {
+//                 j--;
+//             }
+//         }
+        
+        
+         sort(num.begin(), num.end());
+      int ans = 0;
+      int i=0, j=num.size()-1;
+      while(i < j){
+        if(num[i] + num[j] == k){     // found elements just increase counter
+          ans++; i++; j--;
+        } 
+		else if(num[i] + num[j] > k) j--;  // sum is large so decrease the bigger element, i.e. jth element
+        else i++;    // sum is small so increase the smaller element, i.e. ith element
+      }
+      return ans;
+        
+       
         
     }
 };
