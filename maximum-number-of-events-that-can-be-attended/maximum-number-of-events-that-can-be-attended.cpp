@@ -49,4 +49,6 @@ public:
         
     }
 };
+// it will give tle if you directly insert 10^5 elements in set 
+// try to insert the elements in the set till the last maximum value 
 // O(N^2) approach  --> O(nlogn) using lowerbound in set 
