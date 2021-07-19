@@ -1,40 +1,52 @@
+static bool cmp(vector<int>&a , vector<int>&b)
+    {
+        return a[1] < b[1];
+    }
+
 class Solution {
 public:
-    void print(int i , priority_queue<int , vector<int> , greater<int>> pq){
-        cout<<i<<endl;;
-        while(!pq.empty()){
-            cout<<pq.top()<<" ";
-            pq.pop();
-        }
-        cout<<endl;
-    }
+    
+    
     int maxEvents(vector<vector<int>>& events) {
-        int n = events.size();
-        vector<pair<int,int>> vp;
-        int LAST_VALUE = 0;
-        for(auto c:events){
-            vp.push_back({c[0],c[1]});
-            LAST_VALUE = max(LAST_VALUE , c[1]);
+        
+       
+        sort(events.begin(), events.end(), cmp);
+        int ct=0;
+        map<int,int>mp;
+        set<int>t;
+        int last=0;
+        
+        for(int i=0;i<events.size();i++)
+        {
+            last = max(last, events[i][1]);
         }
-        sort(vp.begin(),vp.end());
-        priority_queue<int , vector<int> , greater<int>> pq;
-        int count =0 ;
-        int j=0;
-        for(int i=1;i<=LAST_VALUE;i++){
-            while(j<n and vp[j].first==i){
-                pq.push(vp[j].second);
-                j++;
-            }   
-            if(!pq.empty()){
-                pq.pop();
-                count++;
-            }
-            while(!pq.empty() and pq.top()==i){
-                pq.pop();
-            }
-            // print(i, pq);
+        
+        for(int i=1;i<=last;i++)
+        {
+            t.insert(i);
         }
-        return count;
+        
+        
+        int total=0;
+        int prev = 0;
+        for(int i=0;i<events.size(); i++)
+        {
+            int start = events[i][0];
+            int end = events[i][1];
+           
+            auto curday = t.lower_bound(start);
+            
+            if(curday == t.end() || *curday>end)
+            {
+                continue;
+            }
+            else{
+            t.erase(curday);
+            ct++;
+            }
+        }
+        return ct;
         
     }
 };
+// O(N^2) approach  --> O(nlogn) using lowerbound in set 
