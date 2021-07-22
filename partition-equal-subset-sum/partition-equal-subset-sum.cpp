@@ -1,50 +1,53 @@
 class Solution {
 public:
-    
-    int dp[205][10005];
-    
-    int solve(int i, vector<int>&nums, int sum)
-    {
-       // cout<<i<<" "<<sum<<"\n";
-        if(sum==0)
-        {
-            return dp[i][sum] = 1;
-        }
-        if(i==0)
-        {
-            return dp[i][sum] = 0;
-        }
-        if(dp[i][sum]!=-1)
-            return dp[i][sum];
-        
-        if( nums[i-1] <= sum)
-        {
-            return dp[i][sum] = (solve(i-1, nums, sum - nums[i-1]) || solve(i-1, nums, sum) );
-        }
-        else
-        {
-            return dp[i][sum] = solve(i-1, nums, sum);
-        }
-        
-    }
-    
     bool canPartition(vector<int>& nums) {
         
-        memset(dp, -1, sizeof(dp));
-        
         int n = nums.size();
+        
         int sum=0;
         
         for(int i=0;i<n;i++)
         {
-            sum = sum + nums[i];
+            sum  = sum + nums[i];
         }
-        if(sum%2!=0)
+        
+        if(sum&1)
             return false;
         
         sum = sum/2;
         
-        return solve(n , nums, sum);
+        int dp[n+1][sum+1];
+        
+        memset(dp, -1, sizeof(dp));
+        
+        for(int i=0;i<=n;i++)
+        {
+            for(int j=0;j<=sum;j++)
+            {
+                if(j==0)  // sum=0 
+                {
+                    dp[i][j]=1;
+                    continue;
+                }
+                if(i==0)
+                {
+                    dp[i][j]=0;
+                    continue;
+                }
+                if(nums[i-1]<= j)
+                {
+                    dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i-1]];
+                }
+                else
+                {
+                    dp[i][j]= dp[i-1][j];
+                }
+            }
+        }
+        
         return dp[n][sum];
+        
+        
+        
     }
 };
