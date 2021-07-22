@@ -2,33 +2,7 @@ class Solution {
 public:
     
     int dp[105][100005];
-    
-//     int smash_stones( vector<int>&nums, int n , int sum)
-//     {
-//         if(sum==0)
-//         {
-//             return dp[n][sum]=1;
-//         }
-//         if(n==0)
-//         {
-//             return dp[n][sum]=0;
-//         }
-//         if(dp[n][sum]!=-1)
-//         {
-//             return dp[n][sum];
-//         }
-        
-//         if(nums[n-1] <=  sum)
-//         {
-//             return dp[n][sum] = smash_stones(nums, n-1, sum) || smash_stones(nums, n-1, sum - nums[n-1]);
-//         }
-//         else
-//         {
-//             return dp[n][sum] = smash_stones(nums, n-1, sum);
-//         }
-        
-//     }
-    
+ 
     
     int lastStoneWeightII(vector<int>& stones) {
     
