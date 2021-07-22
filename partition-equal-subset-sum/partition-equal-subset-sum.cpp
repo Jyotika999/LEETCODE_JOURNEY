@@ -1,44 +1,50 @@
 class Solution {
 public:
     
-    int dp[205][20005];
+    int dp[205][10005];
     
-    bool partition(int sum, vector<int>&nums, int i, int n)
+    int solve(int i, vector<int>&nums, int sum)
     {
+       // cout<<i<<" "<<sum<<"\n";
         if(sum==0)
-            return dp[i][sum]=true;
-        
-        if(i==n)
-            return dp[i][sum]=false;
-        
+        {
+            return dp[i][sum] = 1;
+        }
+        if(i==0)
+        {
+            return dp[i][sum] = 0;
+        }
         if(dp[i][sum]!=-1)
             return dp[i][sum];
         
-        if(nums[i]<=sum)
+        if( nums[i-1] <= sum)
         {
-            return dp[i][sum] = partition(sum-nums[i], nums , i+1, n)|| partition(sum , nums, i+1, n);
+            return dp[i][sum] = (solve(i-1, nums, sum - nums[i-1]) || solve(i-1, nums, sum) );
         }
         else
         {
-            return dp[i][sum]= partition(sum, nums, i+1, n);
+            return dp[i][sum] = solve(i-1, nums, sum);
         }
         
     }
-    
     
     bool canPartition(vector<int>& nums) {
         
         memset(dp, -1, sizeof(dp));
         
-        int sum=0;
         int n = nums.size();
-        for(int i=0;i<n;i++)
-            sum+= nums[i];
+        int sum=0;
         
+        for(int i=0;i<n;i++)
+        {
+            sum = sum + nums[i];
+        }
         if(sum%2!=0)
             return false;
         
+        sum = sum/2;
         
-        return partition(sum/2, nums, 0, n);
+        return solve(n , nums, sum);
+        return dp[n][sum];
     }
 };
