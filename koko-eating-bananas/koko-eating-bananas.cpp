@@ -1,57 +1,46 @@
-// MONOTONIC
-// MINIMUM JAISA PUCHA H
-// NLOGM time 
-
-
 class Solution {
 public:
     
-    bool func(int mid, vector<int>&piles, int h)
-    {
-        int ct=0;
-        int n = piles.size();
-        for(int i=0;i<n;i++)
-        {
-           int q = piles[i]/mid;
-           int rem = piles[i]%mid;
-            
-            ct+=q;
-            if(rem)
-                ct++;
-            
-        }
-        
-        if(ct<=h)
-            return true;
-        else
-            return false;
-        
-    }
     
+    int func(int speed, vector<int>&piles)
+    {
+        int hours = 0;
+        
+        for(int i=0;i<piles.size();i++)
+        {
+            int q = piles[i]/speed;
+            int r = piles[i]%speed;
+            
+            hours += q;
+            if(r)
+                hours++;
+        }
+        return hours;
+    }
     int minEatingSpeed(vector<int>& piles, int h) {
         
-        int low = 1;
+        
         int high = 1e9;
-        int ans=0;
+        int low = 1;
+        int ans = 0;
         
         while(low<=high)
         {
-            int mid = (low)+(high-low)/2;
+            int mid  = (low+high)/2;
             
-            /// FFFFFFFFFFFFFFTTTTTTTTTTTTTT. and i  need to find the first true (T)
-            if(func(mid, piles, h)==true)
+            if(func(mid, piles)<=h)
             {
-                ans =mid;
                 high = mid-1;
+                ans = mid;
             }
             else
             {
                 low = mid+1;
             }
+            
         }
         
         return ans;
-        
         
     }
 };
