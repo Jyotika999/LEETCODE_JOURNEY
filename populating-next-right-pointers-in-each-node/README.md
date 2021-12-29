@@ -1,3 +1,4 @@
+[Discussion Post (created on 29/11/2021 at 17:9)](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/1654650/BFS-APPROACH)  
 <h2>116. Populating Next Right Pointers in Each Node</h2><h3>Medium</h3><hr><div style="user-select: auto;"><p style="user-select: auto;">You are given a <strong style="user-select: auto;">perfect binary tree</strong> where all leaves are on the same level, and every parent has two children. The binary tree has the following definition:</p>
 
 <pre style="user-select: auto;">struct Node {
