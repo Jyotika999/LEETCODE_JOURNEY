@@ -1,44 +1,39 @@
 class Solution {
 public:
+    vector<vector<int>>allpaths;
+    int vis[100];
     
-    vector<vector<int>>ans;
-    bool vis[20];
-    
-    void dfs(int src, int dest, vector<vector<int>>&graph, vector<int>temp)
+    void dfs(int node, vector<int>temp, int target, vector<vector<int>>&graph)
     {
-        vis[src]=1;
-        temp.push_back(src);
-        if(src==dest)
+           temp.push_back(node);
+        vis[node]=1;
+        if(node==target)
         {
-            ans.push_back(temp);
+            allpaths.push_back(temp);
             return;
         }
+     
         
-        for(auto child : graph[src])
+        for(auto child : graph[node])
         {
             // if(vis[child]==0)
-            // {
-              //  temp.push_back(child);
-                dfs(child, dest, graph, temp);
-               
-           // }
+            {
+                // temp.push_back(child);
+                dfs(child, temp, target, graph);
+                // temp.pop_back();
+            }
         }
-        vis[src]=0;
-         temp.pop_back();
+        temp.pop_back();
+        
     }
-    
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
         
-        int edges = graph.size();
-        int dest = edges-1;
-        
-        memset(vis, false, sizeof(vis));
+        memset(vis, 0, sizeof(vis));
         
         vector<int>temp;
-       
-        dfs(0, dest, graph, temp);
-        
-        return ans;
+        // temp.push_back(0);
+        dfs(0, temp, graph.size()-1, graph);
+        return allpaths;
         
     }
 };
