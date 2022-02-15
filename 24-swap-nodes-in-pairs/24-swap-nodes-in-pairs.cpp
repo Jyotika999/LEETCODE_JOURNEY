@@ -29,8 +29,8 @@ public:
         // head->next = head;
         // head= temp;
        //head->next = aage;
-        aage = temp1;
-        return aage;
+        // aage = temp1;
+        return temp1;
         
     }
 };
