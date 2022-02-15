@@ -26,10 +26,8 @@ public:
         ListNode * temp = head;
         temp1->next = temp;
         temp->next = aage;
-        // head->next = head;
-        // head= temp;
-       //head->next = aage;
-        // aage = temp1;
+        
+        // start of linkedlist retirn krdo 
         return temp1;
         
     }
