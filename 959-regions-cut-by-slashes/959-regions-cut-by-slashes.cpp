@@ -2,26 +2,21 @@ class Solution {
 public:
     int dx[4]={1, -1, 0, 0};
     int dy[4]={0, 0, 1, -1};
-//     void dfs(int i, int j, vector<vector<int>>&graph, int n)
-//     {
-//         if(i<0 || i>=n || j<0 || j>=n || graph[i][j]!=0)
-//             return;
+    void dfs(int i, int j, vector<vector<int>>&graph, int n)
+    {
+        if(i<0 || i>=n || j<0 || j>=n || graph[i][j]==1)
+            return;
         
-//         graph[i][j]=1;
-//         for(int k=0;k<4;k++)
-//         {
-//             int xx  = i + dx[k];
-//             int yy  = j + dy[k];
-//             if(xx>=0 and yy<n and xx<n and yy>=0 and graph[xx][yy]==0)
-//                 dfs(xx, yy, graph, n);
-//         }
-//     }
-    int dfs(vector<vector<int>> &g, int i, int j) {
-    if (min(i, j) < 0 || max(i, j) >= g.size() || g[i][j] != 0)
-        return 0;
-    g[i][j] = 1;
-    return 1 + dfs(g, i - 1, j) + dfs(g, i + 1, j) + dfs(g, i, j - 1) + dfs(g, i, j + 1);
-}
+        graph[i][j]=1;
+        cout<<i<<" "<<j<<"\n";
+        for(int k=0;k<4;k++)
+        {
+            int xx  = i + dx[k];
+            int yy  = j + dy[k];
+            if(xx>=0 and yy<n and xx<n and yy>=0 and graph[xx][yy]==0)
+                dfs(xx, yy, graph, n);
+        }
+    }
 
     int regionsBySlashes(vector<string>& grid) {
         
@@ -55,8 +50,12 @@ public:
         {
             for(int j=0;j<n*3;j++)
             {
-               
-                ct += dfs(graph, i, j) ? 1 : 0;  
+               if(graph[i][j]==0)
+               {
+                   dfs(i, j, graph, n*3);
+                   ct++;
+               }
+                // ct += dfs(graph, i, j) ? 1 : 0;  
                 // ct+= dfs(graph, i, j, n)? 1 : 0;
             }
         }
