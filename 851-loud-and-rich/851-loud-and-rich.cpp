@@ -3,6 +3,7 @@ public:
     vector<int>graph[505];
      vector<int>ans;
     
+    // returning the node with minimum quietness 
     int dfs(int node, vector<int>&quiet)
     {
         if(ans[node]!=-1)
@@ -38,11 +39,14 @@ public:
             graph[v].push_back(u);
         }
        
+        // dp on graphs
+        // if something is pehle se calculated, toh direct return krdo
+        // otherwise calculate for its children and check if it is having minimum quietness , then update 
         for(int i=0;i<quiet.size();i++)
         {
            
             ans[i]=dfs(i, quiet);
-            // ans.push_back(curnode);
+            
         }
         
         return ans;
