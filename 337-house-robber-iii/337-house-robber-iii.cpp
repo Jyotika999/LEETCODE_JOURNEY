@@ -18,7 +18,7 @@ public:
          if(root==NULL)
             return 0;
         
-        if(mp[root]!=0)
+        if(mp.find(root)!=mp.end())
             return mp[root];
         int leftgrandchild =0;
         int rightgrandchild =0;
