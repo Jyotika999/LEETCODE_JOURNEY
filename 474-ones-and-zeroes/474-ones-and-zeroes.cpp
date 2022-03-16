@@ -39,10 +39,10 @@ public:
         if(v[ind].first<=m and v[ind].second<=n)
         {
             // either choose or not choose
-            include = max(1 + solve(v, m-v[ind].first, n-v[ind].second, ind+1, sz) , solve(v, m, n, ind+1, sz))     ;
+            include = (1 + solve(v, m-v[ind].first, n-v[ind].second, ind+1, sz) )     ;
             // return dp[ind]=include;
         }
-        else
+        // else
         {
         exclude = solve(v, m, n, ind+1, sz);
             // return dp[ind]=exclude;
