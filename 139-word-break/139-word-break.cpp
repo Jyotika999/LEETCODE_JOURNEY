@@ -1,99 +1,40 @@
-class Node{
-public:
-
-        char data;
-        unordered_map<char, Node*>mp;
-        bool terminal;
-
-        Node(char d)
-        {
-            data = d;
-            terminal = false;
-        }
-};
-
-class Trie{
-public:
-    Node * root;
-    Trie()
-    {
-        root = new Node('\0');
-    }
-    
-    void insert(string s)
-    {
-        int n = s.length();
-        Node * temp = root;
-        for(int i=0;i<n;i++)
-        {
-            if(temp->mp.count(s[i])==0)
-            {
-                Node * n = new Node(s[i]);
-                temp->mp[s[i]] = n;
-            }
-            temp = temp->mp[s[i]];
-        }
-        temp->terminal = true;
-        
-    }
-    bool search(string s)
-    {
-        int n = s.length();
-        Node * temp = root;
-        for(int i=0;i<n;i++)
-        {
-            if(temp->mp.count(s[i])==0)
-            {
-               return false;
-            }
-            temp = temp->mp[s[i]];
-        }
-        
-        return temp->terminal;
-        
-    }
-    
-};
-
-
 class Solution {
 public:
-    Trie t ;
-    unordered_map<string, int>mp;
-    
-    bool word_break_util(string s)
-    {
+     map<string, int>mp;
+        
+    bool wordBreak(string s, vector<string>& words) {
+        
         int n = s.length();
-        if(n==0)
-            return true;
+        int n1 = words.size();
         
-        if(mp.find(s)!=mp.end())
-            return mp[s];
-        
-        for(int i=1;i<=n;i++)
+        for(int i=0;i<n1;i++)
         {
-            string substr1 = s.substr(0, i);
-            string substr2 = s.substr(i, n);
-            cout<<substr1<<" "<<substr2<<"\n";
-            if(t.search(substr1) && word_break_util(substr2))
+            mp[words[i]]++;
+        }
+        
+        vector<int>dp(n+1, 0);
+        
+        dp[n]=1;
+        
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int j=i;j<n;j++)
             {
-                return mp[s] = true;
+                string str1 = string(&s[i], &s[j+1]);
+                // string str2 = s.substr(j+1, n);
+                if(mp[str1] and dp[j+1]==1)
+                {
+                    dp[i]=1;
+                    break;
+                }
             }
         }
-        return mp[s] = false;
-    }
-    
-    bool wordBreak(string s, vector<string>& worddict) {
-        
-        int n = worddict.size();
-        // Trie t ; 
         
         for(int i=0;i<n;i++)
-        {
-            t.insert(worddict[i]);
-        }
+            cout<<dp[i]<<"\n";
+        return dp[0];
         
-        return word_break_util(s);
-          
+        
+        
     }
 };
