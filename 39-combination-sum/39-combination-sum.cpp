@@ -1,48 +1,41 @@
 class Solution {
 public:
     
+     void solve(vector<vector<int>>&ans, vector<int>&c, vector<int>temp, int target, int i , int n)
+     {
+         
+         if(target==0)
+         {
+             ans.push_back(temp);
+             return;
+         }
+         if(i>=n)
+             return;
+         
+         if(c[i]<=target)
+         {
+             // either choose or not choose 
+             // choosing it , but we could again repeat it
+             temp.push_back(c[i]);
+             solve(ans, c, temp, target-c[i], i, n);
+             temp.pop_back();
+             
+             solve(ans, c, temp, target, i+1, n);
+         }
+         else
+         {
+             solve(ans, c, temp, target, i+1, n);
+         }
+         
+     }
     
-    void solve(int ind, vector<int>temp, vector<vector<int>>&ans, vector<int>&v, int n, int target)
-    {
-        
-        if(target==0)
-        {
-            cout<<"hi\n";
-            ans.push_back(temp);
-            return;
-        }
-        
-        if(ind>=n)
-            return ;
-        
-        
-        if(v[ind]<=target)
-        {
-            // choice 
-            // either to include current element 
-            temp.push_back(v[ind]);
-            solve(ind, temp, ans, v, n, target-v[ind]);
-            temp.pop_back();
-            
-            // or exclude the current element
-            solve(ind+1, temp, ans, v, n, target);
-            
-        }
-        else
-        {
-            // exclude current element 
-            solve(ind+1, temp, ans, v, n, target);
-        }
-        
-        
-    }
-    vector<vector<int>> combinationSum(vector<int>& c, int target) {
-        
-        vector<int>temp;
-        vector<vector<int>>ans;
-        
+    vector<vector<int>> combinationSum(vector<int>& c,  int target) {
+    
+       vector<vector<int>>ans;
+    
         int n = c.size();
-        solve(0, temp, ans, c, n, target);
+        vector<int>temp;
+        solve(ans, c, temp, target, 0, n);
         return ans;
         
     }
