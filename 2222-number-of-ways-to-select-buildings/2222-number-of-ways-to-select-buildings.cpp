@@ -32,7 +32,7 @@ public:
     }
     long long numberOfWays(string s) {
        ios_base::sync_with_stdio(false);
-      cin.tie(NULL); 
+    cin.tie(NULL); 
         long long n = s.length();
         vector<vector<long long>>dp(n+1, vector<long long>(4, -1));
         long long m = 3;
