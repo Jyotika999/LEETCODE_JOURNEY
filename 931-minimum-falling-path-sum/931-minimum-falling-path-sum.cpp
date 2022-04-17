@@ -17,7 +17,7 @@ public:
             return dp[i][j]=matrix[i][j];
         }
         
-        if(dp[i][j]!=INT_MAX)
+        if(dp[i][j]!=-1)
             return dp[i][j];
         
         int down = solve(i+1, j, matrix, dp, n, m) ;
@@ -35,7 +35,7 @@ public:
         int n = matrix.size();
         int m = matrix[0].size();
         int ans = INT_MAX;
-        vector<vector<int>>dp(n, vector<int>(m, INT_MAX));
+        vector<vector<int>>dp(n, vector<int>(m, -1));
         
         for(int i=0;i<m;i++)
         {
