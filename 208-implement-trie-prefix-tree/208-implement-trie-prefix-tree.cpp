@@ -1,69 +1,64 @@
 class Node{
-public:
-    
-    char data;
-    unordered_map<char, Node*>mp;
-    bool terminal;
-    
-    Node(char d)
+  public:
+    int flag;
+    Node * ar[26];
+    Node()
     {
-        data = d;
-        terminal = false; 
+        flag=0;
+        for(int i=0;i<26;i++)
+        {
+            ar[i]=NULL;
+        }
     }
 };
 
 class Trie {
 public:
-    Node * root;
+    
+    Node * t = new Node();
     Trie() {
-        root = new Node('\0');
+        
     }
     
     void insert(string word) {
-        
-        Node * temp = root;
-        int n = word.length();
-        for(int i=0;i<n;i++)
+        Node * temp = t;
+        for(int i=0;i<word.size();i++)
         {
-            if(temp->mp.count(word[i])==0)
+            int index = word[i]-'a';
+            if(temp->ar[index]==NULL)
             {
-                Node * n = new Node(word[i]);
-                temp->mp[word[i]] = n;
+                temp->ar[index] = new Node();
             }
-            temp = temp->mp[word[i]];
+            temp = temp->ar[index];
         }
-        temp->terminal = true;
+        temp->flag=1;
     }
     
     bool search(string word) {
+        Node * temp = t;
         
-        Node * temp = root;
-        int n = word.size();
-        for(int i=0;i<n;i++)
+        for(int i=0;i<word.size();i++)
         {
-            if(temp->mp.count(word[i])==0)
-            {
+            int index = word[i]-'a';
+            if(temp->ar[index]==NULL)
                 return false;
-            }
-            temp = temp->mp[word[i]];
+            temp=temp->ar[index];
+            
         }
-        return temp->terminal;
-        
+        return temp->flag;
     }
     
     bool startsWith(string prefix) {
         
-        int n = prefix.length();
-        Node * temp = root;
-        for(int i=0;i<n;i++)
+        Node * temp = t;
+        for(int i=0;i<prefix.size();i++)
         {
-            if(temp->mp.count(prefix[i])==0)
+            int index = prefix[i]-'a';
+            if(temp->ar[index]==NULL)
                 return false;
-            
-            temp = temp->mp[prefix[i]];
+            temp = temp->ar[index];
         }
         return true;
-        
     }
 };
 
