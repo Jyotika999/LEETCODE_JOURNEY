@@ -15,7 +15,6 @@ public:
                     if(dp[j]+1==dp[i])
                     {
                         cnt[i]+=cnt[j];
-                        // dp[i]=dp[j]+1;
                     }
                     if(dp[j]+1>dp[i])
                     {
