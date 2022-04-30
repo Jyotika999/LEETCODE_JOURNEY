@@ -11,17 +11,17 @@
 class Solution {
 public:
     
-    
-    ListNode* merge(ListNode * l1, ListNode * l2)
+    ListNode * merge(ListNode * l1, ListNode * l2)
     {
+        
         if(l1==NULL and l2==NULL)
             return NULL;
         
-        if(l1==NULL)
-            return l2;
-        
-        if(l2==NULL)
+        if(l1!=NULL and l2==NULL)
             return l1;
+        
+        if(l2!=NULL and l1==NULL)
+            return l2;
         
         if(l1->val < l2->val)
         {
@@ -30,22 +30,22 @@ public:
         }
         else
         {
-             l2->next = merge(l1, l2->next);
+            l2->next = merge(l1, l2->next);
             return l2;
         }
+        
     }
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         
-        int n = lists.size();
-        if(n==0)
-            return NULL;
-        ListNode * temp = lists[0];
-        for(int i=1;i<n;i++)
-        {
-           temp = merge(temp, lists[i]);
-        }
-        return temp;
+        int total_lists = lists.size();
         
+        if(total_lists==0)
+            return NULL;
+        for(int i=1;i<total_lists;i++)
+        {
+            lists[0]=merge(lists[0], lists[i]);
+        }
+        return lists[0];
         
     }
 };
