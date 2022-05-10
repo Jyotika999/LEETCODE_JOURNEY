@@ -5,8 +5,8 @@ public:
     {
         if(n==0)
         {
-            sort(temp.begin(), temp.end());
-            if(temp.size()==k and (find(ans.begin(), ans.end(), temp)==ans.end()))
+            // sort(temp.begin(), temp.end());
+            if(temp.size()==k)
             ans.push_back(temp);
             return;
             
