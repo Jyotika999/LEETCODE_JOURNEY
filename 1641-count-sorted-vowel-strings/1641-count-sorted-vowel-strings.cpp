@@ -2,16 +2,19 @@ class Solution {
 public:
     
     
-    int solve( int last, int n)
+    int solve( int last, int n, vector<vector<int>>&dp)
     {
         if(n==0)
         {
             // ans.push_back(s);
             
            
-            return 1;
+            return dp[last][n]= 1;
         }
+          
         
+        if(dp[last][n]!=-1)
+            return dp[last][n];
        
         
         int ans=0;
@@ -19,9 +22,9 @@ public:
             last=1;
         for(int i=last;i<=5;i++)
         {
-           ans+= solve(i, n-1);
+           ans+= solve(i, n-1, dp);
         }
-        return ans;
+        return dp[last][n]= ans;
     }
     
     int countVowelStrings(int n) {
@@ -35,8 +38,8 @@ public:
         
         
         // vector<string>ans;
-        
-        return solve(0, n);
+        vector<vector<int>>dp(10, vector<int>(n+5, -1));
+        return solve(0, n, dp);
         // return ans.size();
         
     }
