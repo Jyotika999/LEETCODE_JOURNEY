@@ -11,6 +11,10 @@
  */
 class Solution {
 public:
+    
+    
+    
+    
     int deepestLeavesSum(TreeNode* root) {
         
 //         q={(1, 0) }
@@ -21,34 +25,40 @@ public:
 //         level[1]=5
         
             
-        queue<pair<TreeNode *, int>>q;
-        vector<int>level(10000, 0);
+        queue<TreeNode *>q;
+    
+        q.push(root);
         
-        q.push({root, 0});
-        int maxi=0;
+        int maxsum=0;
         
         while(!q.empty())
         {
-            auto cur = q.front();
-            q.pop();
-            TreeNode* curnode = cur.first;
-            int curlevel = cur.second;
-            level[curlevel]+=curnode->val;
-            maxi = max(maxi, curlevel);
+           
+            int n = q.size();
+            int sum = 0;
             
-            if(curnode->left!=NULL)
+            for(int i=0;i<n;i++)
             {
-                q.push({curnode->left, curlevel+1});
-                // level[curlevel+1]+=cur->left->val;
+                TreeNode * curnode = q.front();
+                q.pop();
+                sum+= curnode->val;
+                
+                if(curnode->left!=NULL)
+                {
+                    q.push(curnode->left);
+                  
+                }
+                if(curnode->right!=NULL)
+                {
+                    q.push(curnode->right);
+                
+                }
+               maxsum = sum;
             }
-            if(curnode->right!=NULL)
-            {
-                q.push({curnode->right, curlevel+1});
-                // level[curlevel+1]+=cur->right->val;
-            }
+          
         }
         
-        return level[maxi];
+        return maxsum;
         
         
     }
