@@ -1,77 +1,64 @@
 class Solution {
 public:
-    
     int dp[605][105][105];
-    int num_zero(string s)
-    {
-        int ct=0;
-        for(int i=0;i<s.length();i++)
-        {
-            if(s[i]=='0')
-                ct++;
-        }
-        return ct;
-    }
-    int num_one(string s)
-    {
-        int ct=0;
-        for(int i=0;i<s.length();i++)
-        {
-            if(s[i]=='1')
-                ct++;
-        }
-        return ct;
-    }
     
-    
-    int solve(vector<pair<int,int>>&v, int m, int n, int ind, int sz)
+    int find_max_subset(vector<pair<int,int>>&v, int ind, int m, int n)
     {
-        if(ind>=sz||m<0 || n<0)
+        if(ind>=v.size())
             return 0;
-        
-      
         
         if(dp[ind][m][n]!=-1)
             return dp[ind][m][n];
         
-        int include=0;
-        int exclude=0;
         if(v[ind].first<=m and v[ind].second<=n)
         {
-            // either choose or not choose
-            include = (1 + solve(v, m-v[ind].first, n-v[ind].second, ind+1, sz) )     ;
-            // return dp[ind]=include;
+            // either choose current element
+            int inc = (1+ find_max_subset(v, ind+1, m-v[ind].first, n-v[ind].second));
+            
+            // or dont choose this element 
+            int exc = find_max_subset(v, ind+1, m, n);
+            return dp[ind][m][n]=max(inc, exc);
         }
-        // else
+        else
         {
-        exclude = solve(v, m, n, ind+1, sz);
-            // return dp[ind]=exclude;
+            // dont choose this element
+            return dp[ind][m][n]=find_max_subset(v, ind+1, m, n);
         }
-        return dp[ind][m][n] = max(include, exclude);
     }
-    
-    
     int findMaxForm(vector<string>& strs, int m, int n) {
-        int sz = strs.size();
-        memset(dp, -1, sizeof(dp));
+        
+        // something related to knapsack problem 
+        // since we need to have atmost m 0's 
+        // and atmost n 1's 
+        // on doing analogy to the standard knapsack problem
+        // total wt = m 0s and n 1s 
+        // choose the lasrgest possible subset 
+        
+        // dp states = m, n, index 
+        // calculate 0s and 1s for every string which is present in the vector
         
         vector<pair<int,int>>v;
-        for(int i=0;i<sz;i++)
+        // {count of zero, count of one}
+        int n1 = strs.size();
+        
+        for(int i=0;i<n1;i++)
         {
             string cur = strs[i];
-            int zero = num_zero(cur);
-            int one = num_one(cur);
-            // cout<<cur<<" "<<zero<<" "<<one<<"\n";
-            v.push_back({zero, one});
+            int ct=0;
+            for(int j=0;j<cur.length();j++)
+            {
+                if(cur[j]=='0')
+                    ct++;
+            }
+            v.push_back({ct, cur.length()-ct});
         }
+        memset(dp, -1, sizeof(dp));
         
-        return solve(v, m, n, 0, sz);
-        // int maxi=0;
-        // for(int i=0;i<sz;i++)
-        // {
-        //     cout<<dp[i]<<"\n";
-        //     maxi = max(maxi, dp[i]);
-        // }
-        // return maxi;
+        return find_max_subset(v, 0, m, n);
+        
+        
+        
+        
+        
     }
 };
