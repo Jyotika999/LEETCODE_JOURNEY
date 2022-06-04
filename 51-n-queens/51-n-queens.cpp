@@ -1,89 +1,93 @@
 class Solution {
 public:
     
-    bool valid(int i, int j, int n, vector<string>&board)
+    
+    bool valid(int x, int y, int n, vector<string>&grid)
     {
-        // no clash from same row
-        for(int row=0;row<n;row++)
+        // no queen in same row
+        for(int i=0;i<n;i++)
         {
-            if(board[row][j]=='Q')
+            if(grid[x][i]=='Q' )
                 return false;
         }
         
-        // no clash from same column
-        for(int col=0;col<n;col++)
+        // no queen in same column
+        for(int i=0;i<n;i++)
         {
-            if(board[i][col]=='Q')
+            if(grid[i][y]=='Q' )
                 return false;
         }
         
-        int row=i;
-        int col=j;
-        // no clash from left diagonal
-        while(row>=0 and col>=0)
+        // no queen in same left diagonal
+        int i = x;
+        int j = y;
+        while(i>=0 and j>=0)
         {
-            if(board[row][col]=='Q')
-                return false;
-            row--;
-            col--;
+            // if(x!=i and y!=j)
+            {
+                if(grid[i][j]=='Q')
+                    return false;
+            }
+            i--;
+            j--;
         }
         
-        // no clash from right diagonal
-        row=i;
-        col=j;
-        while(col<n and row>=0)
+        i=x;
+        j=y;
+        while(i>=0 and j<n)
         {
-            if(board[row][col]=='Q')
-                return false;
-            row--;
-            col++;
+            // if(x!=i and y!=j)
+            {
+                if(grid[i][j]=='Q')
+                    return false;
+            }
+            i--;
+            j++;
         }
-        
         return true;
+        
+        // no queen in same right diagonal
+        
+        
     }
-    void solve(vector<vector<string>>&ans, vector<string>&board, int i, int n)
+    void solve(int i, int n, vector<string>&grid, vector<vector<string>>&ans)
     {
         if(i>=n)
         {
-            ans.push_back(board);
-            return ;    
+            ans.push_back(grid);
+            return ;
         }
         
         for(int j=0;j<n;j++)
         {
-            if(board[i][j]=='.')
+            if(grid[i][j]=='.')
             {
-                if(valid(i, j, n, board))
+              
+                if(valid(i,j,  n, grid))
                 {
-                    board[i][j]='Q';
-                    solve(ans, board, i+1, n);
-                    board[i][j]='.';
+                    // valid placing of queens
+                    grid[i][j]='Q';
+                     solve(i+1,  n, grid, ans);
+                    grid[i][j]='.';
+                    // cout<<i<<" "<<j<<"\n";
+                    // return true;
                 }
+             
             }
         }
-        
+        // return false;
+        // return true;
     }
-    
     vector<vector<string>> solveNQueens(int n) {
-        
-        vector<string>board;
         string s="";
         for(int i=0;i<n;i++)
-        {
             s+=".";
-        }
-        for(int i=0;i<n;i++)
-        {
-            board.push_back(s);
-        }
         
+        vector<string>grid(n, s);
         vector<vector<string>>ans;
         
-        solve(ans, board, 0, n);
-        
+        solve(0, n, grid, ans);
         return ans;
-        
-        
         
     }
 };
