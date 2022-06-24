@@ -3,20 +3,18 @@ public:
     int maxSubArray(vector<int>& nums) {
         
         int n = nums.size();
-        int sum=0;
-        int maxsum=INT_MIN;
+      
+        int j=0;
+        long long int sum=0;
+        long long int maxsum=INT_MIN;
         
-        for(int i=0;i<n;i++)
+        for(int j=0;j<n;j++)
         {
-            sum+= nums[i];
-            
-              if(sum>maxsum)
-                maxsum = max(sum, maxsum);
-            
+            sum+=nums[j];
+            maxsum = max(maxsum, sum);
             if(sum<0)
-                sum=0;
-            
-          
+                sum=max(0, nums[j]);
+
         }
         
         return maxsum;
