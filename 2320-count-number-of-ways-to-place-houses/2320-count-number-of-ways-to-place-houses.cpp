@@ -4,7 +4,7 @@ public:
     int solve(int n, int i, int mod, vector<int>&dp)
     {
         if(i<=0)
-            return 1;
+            return 1;  // ek treeka hai sare houses ko bina adjacent rkhne ka 
         
         // if(i==2)
             
