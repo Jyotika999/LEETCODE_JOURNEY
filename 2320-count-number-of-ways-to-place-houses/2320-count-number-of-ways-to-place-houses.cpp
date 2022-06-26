@@ -3,7 +3,7 @@ public:
     
     int solve(int n, int i, int mod, vector<int>&dp)
     {
-        if(i<0)
+        if(i<=0)
             return 1;
         
         // if(i==2)
@@ -20,7 +20,7 @@ public:
         
         vector<int>dp(n+5, -1);
         int mod = 1000000007;
-        int ans = solve(n-1, n-1, mod, dp);
+        int ans = solve(n, n, mod, dp);
         return (1LL*(ans%mod)*(ans%mod))%mod;
     }
 };
