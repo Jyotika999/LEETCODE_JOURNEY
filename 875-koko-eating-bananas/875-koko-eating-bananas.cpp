@@ -1,44 +1,41 @@
 class Solution {
 public:
-    
-    int func(int v, vector<int>&piles)
+    long long int func(int mid, vector<int>&piles)
     {
-        int n = piles.size();
-        int ct=0;
-        
-        for(int i=0;i<n;i++)
+        long long int h=0;
+        for(int i=0;i<piles.size();i++)
         {
-            if(piles[i]<=v)
-            {
-                ct++;
-            }
+            if(piles[i]<=mid)
+                h++;
             else
             {
-                ct+=piles[i]/v;
-                int rem = piles[i]%v;
-                if(rem)
-                    ct++;
+                h+=piles[i]/mid;
+                if(piles[i]%mid!=0)
+                    h++;
             }
         }
-        return ct;
+        return h;
     }
+    
     int minEatingSpeed(vector<int>& piles, int h) {
         
+        // koko's per hour eating speed is k
+        
         int n = piles.size();
-        long long int high=0;
-        long long int low=1;
-        
+        int high=0;
         for(int i=0;i<n;i++)
-            high = high + piles[i];
-        
-        int ans=0;
+        {
+            high  = max(high, piles[i]);
+        }
+        long long int low=1;
+        long long int ans=0;
         while(low<=high)
         {
-            long long int mid = low+(high-low)/2;
+            long long int mid = (low+high)/2;
             
             if(func(mid, piles)<=h)
             {
-                ans = mid;
+                ans=mid;
                 high=mid-1;
             }
             else
@@ -48,6 +45,5 @@ public:
         }
         
         return ans;
-        
     }
 };
