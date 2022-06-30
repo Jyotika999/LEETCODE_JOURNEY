@@ -1,62 +1,53 @@
 class Solution {
 public:
+        
+    int dx[4]={1, -1, 0, 0};
+    int dy[4]={0, 0, 1, -1};
     
-    
-    // those cells which are land cells, and these cells which are on boundary , any connected component , which have atleast 1 cell on the boundary of the grid, will be accesible cells
-    
-    // hence marking above cells as viisted 
-    // marking the remaining cells as univisited
-    
-    int dx[4]={1,-1,0,0};
-    int dy[4]={0,0,1,-1};
-    
-    void dfs(int i, int j, int n, int m, vector<vector<int>>&grid)
+    void dfs(int i, int j, int n, int m, vector<vector<int>>&grid, vector<vector<int>>&vis)
     {
-        grid[i][j]=0;
+        vis[i][j]=1;
         
         for(int k=0;k<4;k++)
         {
             int xx = i + dx[k];
             int yy = j + dy[k];
             
-            if(xx>=0 and yy>=0 and xx<n and yy<m and grid[xx][yy]==1)
+            if(xx>=0 and yy>=0 and xx<n and yy<m and  grid[xx][yy]==1 and vis[xx][yy]==0)
             {
-                dfs(xx, yy, n, m, grid);
+                dfs(xx, yy, n, m, grid, vis);
             }
         }
     }
-    
     int numEnclaves(vector<vector<int>>& grid) {
         
         int n = grid.size();
         int m = grid[0].size();
         
+        vector<vector<int>>vis(n, vector<int>(m, 0));
+        
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
             {
-                if(i==0 || j==0 || i==n-1||j==m-1)
+                if(vis[i][j]==0 and (i==0 || j==0 || i==n-1 || j==m-1) and grid[i][j]==1)
                 {
-                    if(grid[i][j]==1)
-                    {
-                        dfs(i, j, n, m, grid);
-                    }
-                    
+                    dfs(i, j, n, m, grid, vis);
                 }
             }
         }
         
-        int ct=0;
+        int count=0;
         
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
             {
-                ct+=grid[i][j];
+                if(vis[i][j]==0 and grid[i][j]==1)
+                    count++;
             }
         }
-        return ct;
-        
+        return count;
         
     }
 };
