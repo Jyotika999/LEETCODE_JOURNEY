@@ -1,46 +1,47 @@
 class Solution {
 public:
     
-    int maxtime=0;
-    vector<int>graph[100005];
-    vector<int>vis;
-    
-    map<int,int>time;
-    
-    void dfs(int node, int cur)
+    int dfs(int root, vector<vector<pair<int,int>>>&graph, vector<int>&informtime, vector<int>&vis, int &maxtime)
     {
-        vis[node] =1;
-        maxtime = max(maxtime, cur);
-        for(auto child : graph[node])
+        
+        vis[root]=1;
+        int tm=0;
+        
+        for(auto c : graph[root])
         {
-            if(vis[child]==0)
+            auto child = c.first;
+            int wt = c.second;
+            if(!vis[child])
             {
-                dfs(child, cur+time[child]);
+                tm=max(tm,  wt+dfs(child, graph, informtime, vis, maxtime));
             }
         }
+        maxtime = max(maxtime, tm);
+        // cout<<root<<" "<<tm<<"\n";
+        return tm;
+        
     }
-    
-    int numOfMinutes(int n, int headId, vector<int>& manager, vector<int>& informTime) {
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informtime) {
         
-        maxtime=0;
-        vis.resize(n);
-        // memset(vis, 0, sizeof(vis));
-        for(int i=0;i<n;i++)
-        {
-            time[i]=informTime[i];
-        }
+        int root=0;
+        int total_managers  = manager.size();
+        vector<vector<pair<int,int>>>graph(total_managers);
         
-        for(int i=0;i<n;i++)
+        vector<int>vis(total_managers, 0);
+        
+        for(int i=0;i<total_managers ; i++)
         {
-            int u = i;
-            int v = manager[i];
+           int u = i;
+           int v = manager[i];
             
-            if(v!=-1)
-            graph[v].push_back(u);
+           if(v!=-1)
+           {
+               graph[v].push_back({u, informtime[v]});
+           }
         }
-        
-        dfs(headId, time[headId]);
-        
+        int maxtime=0;
+        dfs(headID, graph, informtime,vis, maxtime);
+     
         return maxtime;
         
     }
