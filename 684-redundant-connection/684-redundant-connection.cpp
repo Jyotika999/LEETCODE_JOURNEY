@@ -1,74 +1,79 @@
 class Solution {
 public:
     
-    
-    int parent[1005];
-    int rank[1005];
-    // if there exists an edge between u and v , such that the representative of component to which u belongs is same as the representative of component to which v belongs, then u and v are belonging to same set , hence we will add them to redundant edges
-    
-    
-    int find_parent(int n)
+    int findparent(int node, vector<int>&parent)
     {
-        if(n==parent[n])
-            return n;
+        if(node == parent[node])
+            return node;
         
-        return parent[n]=find_parent(parent[n]);
+        return parent[node] = findparent(parent[node], parent);
+        
     }
-    
-    void unionn(int a, int b)
+    void unionn(int u, int v, vector<int>&rank, vector<int>&parent)
     {
-        a = find_parent(a);
-        b = find_parent(b);
+        u = findparent(u, parent);
+        v = findparent(v, parent);
         
-        if(a!=b)
+        if(u!=v)
         {
-            if(rank[a]<rank[b])
+            if(rank[u]<rank[v])
             {
-                parent[a]=b;
+                parent[u]=v;
             }
-            else if(rank[a]>rank[b])
+            else if(rank[v]<rank[u])
             {
-                parent[b]=a;
+                parent[v]=u;
             }
             else
             {
-                // only if we have equal ranks, change rank only then , since it means depth, and if we are uniting two components with same rank, then we are ultimately increasing the depth by 1 
-                rank[a]++;
-                parent[b]=a;
+                parent[v]=u;
+                rank[u]++;
             }
         }
+        
     }
     
-    void make_set(int i)
+    void makeset(vector<int>&parent, vector<int>&rank, int n)
     {
-        rank[i]=0;
-        parent[i]=i;
-    }
-    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-        
-        for(int i=0;i<edges.size();i++)
+        for(int i=0;i<n;i++)
         {
-            make_set(i);
+            parent[i]=i;
+            rank[i]=0;
         }
-        vector<int>ans;
-        for(int i=0;i<edges.size();i++)
+    }
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) 
+    {
+    // why should i connect those nodes, which are already in the same component ?
+        
+        vector<int>redundant;
+        
+        int total_edges = edges.size();
+        vector<int>parent(1005);
+        vector<int>rank(1005);
+        
+        makeset(parent, rank, total_edges);
+        for(int i=0;i<total_edges;i++)
         {
-            vector<int>temp;
             int u = edges[i][0];
             int v = edges[i][1];
-            
-            if(find_parent(u)==find_parent(v))
+            vector<int>temp;
+            int pu = findparent(u, parent);
+            int pv = findparent(v, parent);
+            if(pu==pv)
             {
                 temp.push_back(u);
                 temp.push_back(v);
-                ans=temp;
+                redundant = temp;
             }
             else
             {
-                unionn(u, v);
+                unionn(u, v, rank, parent);
             }
+            
         }
         
-        return ans;
+        
+        return redundant;
+        
     }
 };
