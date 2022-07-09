@@ -1,59 +1,73 @@
 class Solution {
 public:
-    vector<pair<int,int>>graph[1000];
-    int networkDelayTime(vector<vector<int>>& edges, int n, int k) {
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
         
-        int dis[n];
-        for(int i=0;i<n;i++)
+        // directed edge 
+        int total_edges = times.size();
+        vector<pair<int,int>>graph[n]; // {adjacent node, weight of edge}
+        
+        
+        for(int i=0;i<total_edges;i++)
         {
-            dis[i]= INT_MAX;
-        }
-        int x = edges.size();
-        for(int i=0;i<x;i++)
-        {
-            int u = edges[i][0];
-            int v = edges[i][1];
-            u--;
-            v--;
-            int wt = edges[i][2];
+            int  u = times[i][0];
+            int v = times[i][1];
+            int wt = times[i][2];
+            u--, v--;
             graph[u].push_back({v, wt});
         }
         
-        priority_queue<pair<int,int>>pq;
-        dis[k-1]=0;
-        pq.push({ 0, k-1});
+        k--;
+        vector<int>dis(n, INT_MAX);
+        dis[k]=0;
         
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>>pq;
+        
+        pq.push({0, k}); // {dis, node}
+        
+        int mini = INT_MIN;
         
         while(!pq.empty())
         {
-            int cur = pq.top().second;
-            int d = pq.top().first;
+            auto cur = pq.top();
+            int curnode = cur.second;
+            int curdis = cur.first;
             pq.pop();
             
-            for(auto c : graph[cur])
+            for(auto child : graph[curnode])
             {
-                int child = c.first;
-                int wt = c.second;
+                int adjacent_node = child.first;
+                int adjacent_weight = child.second;
                 
-                if(d + wt < dis[child])
+                if(curdis + adjacent_weight < dis[adjacent_node])
                 {
-                    dis[child]= d + wt;
-                    pq.push({ dis[child] , child});
+                    dis[adjacent_node]  = curdis + adjacent_weight;
+                    pq.push({dis[adjacent_node], adjacent_node});
                 }
             }
             
+            
         }
         
         
-        int max_time=0;
         for(int i=0;i<n;i++)
         {
-            cout<<i<<" "<<dis[i]<<"\n";
-            if(dis[i]==INT_MAX)
-                return -1;
-            max_time = max(max_time, dis[i]);
+            mini = max(mini, dis[i]);
         }
         
-        return max_time;
+        
+        if(mini == INT_MAX)
+            return -1;
+        else
+            return mini;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 };
