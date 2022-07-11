@@ -3,7 +3,7 @@ public:
     int longestSubsequence(vector<int>& arr, int k) {
         
         int n = arr.size();
-        // sort(arr.begin(), arr.end());
+        // sort(arr.begin(), arr.end()); // sort nhi krna, kyuki order khrab hojayega, and we need to find subsequence not subset
         
         unordered_map<int,int>dp;
         
