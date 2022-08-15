@@ -1,62 +1,74 @@
-class Node{
-  public:
-    int flag;
-    Node * ar[26];
-    Node()
+class Node
+{
+public:
+    char data ;
+    unordered_map<char,Node*>mp;
+    bool isterminal ;
+    Node(char d)
     {
-        flag=0;
-        for(int i=0;i<26;i++)
-        {
-            ar[i]=NULL;
-        }
+            data = d;
+            isterminal = false;    
+            // for(int i=0;i<26;i++)
+            // {
+                // mp['a'+i]=0;
+            // }
     }
 };
 
 class Trie {
 public:
     
-    Node * t = new Node();
+    Node * root ;
     Trie() {
         
+        root = new Node('\0');
     }
     
     void insert(string word) {
-        Node * temp = t;
-        for(int i=0;i<word.size();i++)
+        Node * temp = root;
+        int len = word.length();
+        
+        for(int i=0;i<len;i++)
         {
-            int index = word[i]-'a';
-            if(temp->ar[index]==NULL)
+            if(temp->mp.count(word[i])==0)
             {
-                temp->ar[index] = new Node();
+                Node * newnode = new Node(word[i]);
+                temp->mp[word[i]] = newnode;
+                
             }
-            temp = temp->ar[index];
+            temp = temp->mp[word[i]];
         }
-        temp->flag=1;
+        temp->isterminal = true;
+        
     }
     
     bool search(string word) {
-        Node * temp = t;
         
-        for(int i=0;i<word.size();i++)
+        Node * temp = root;
+        int len = word.length();
+        
+        for(int i=0;i<len;i++)
         {
-            int index = word[i]-'a';
-            if(temp->ar[index]==NULL)
+            if(temp->mp.count(word[i])==0)
                 return false;
-            temp=temp->ar[index];
             
+            temp = temp->mp[word[i]];
         }
-        return temp->flag;
+        return temp->isterminal;
     }
     
     bool startsWith(string prefix) {
         
-        Node * temp = t;
-        for(int i=0;i<prefix.size();i++)
+        Node * temp = root;
+        int len = prefix.length();
+        
+        for(int i=0;i<len;i++)
         {
-            int index = prefix[i]-'a';
-            if(temp->ar[index]==NULL)
-                return false;
-            temp = temp->ar[index];
+            if(temp->mp.count(prefix[i])==0)
+            {
+              return false;
+            }
+              temp = temp->mp[prefix[i]];
         }
         return true;
     }
