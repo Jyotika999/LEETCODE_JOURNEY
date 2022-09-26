@@ -12,7 +12,7 @@
 class Solution {
 public:
     
-    void dfs(TreeNode * root, int target, vector<vector<int>>&path, vector<int>curpath)
+    void dfs(TreeNode * root, int target, vector<vector<int>>&path, vector<int>&curpath)
     {
     
         // NULL node 
@@ -33,8 +33,9 @@ public:
             }
         }
         
-        dfs(root->left, target, path, curpath);
+        dfs(root->left, target, path, curpath);  //[5,4 , 11, 2]
         dfs(root->right, target, path, curpath);
+        curpath.pop_back();
         
         
         
